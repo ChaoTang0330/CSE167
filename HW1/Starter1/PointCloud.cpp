@@ -88,11 +88,24 @@ PointCloud::PointCloud(std::string objFilename, GLfloat pointSize)
 		points[i].x = points[i].x - (float)0.5 * xLength;
 		points[i].y = points[i].y - (float)0.5 * yLength;
 		points[i].z = points[i].z - (float)0.5 * zLength;
-		tempRadius = sqrt(pow(points[i].x, 2) + pow(points[i].y, 2) + pow(points[i].z, 2));
-		radius = (tempRadius > radius) ? tempRadius : radius;
+		tempRadius = sqrt(pow(points[i].x, 2) + pow(points[i].y, 2) + pow(points[i].z, 2)); // calculate distance
+		radius = (tempRadius > radius) ? tempRadius : radius;//find min
 	}
-	std::cout << "radius = " << radius << std::endl;
+	//std::cout << "radius = " << radius << std::endl;
 	
+	//Scale
+	float winLength = 480;//the length of the shorter side of the window
+	if (radius > 0)
+	{
+		float factor = 50;
+		float scalePara = winLength / (radius * factor);
+		for (int i = 0; i < points.size(); i++) //scaling the coordinate of each point
+		{
+			points[i].x = points[i].x * scalePara;
+			points[i].y = points[i].y * scalePara;
+			points[i].z = points[i].z * scalePara;
+		}
+	}
 	
 
 	// Set the model matrix to an identity matrix. 
@@ -153,7 +166,7 @@ void PointCloud::updatePointSize(GLfloat size)
 	/*
 	 * TODO: Section 3: Implement this function to adjust the point size.
 	 */
-	PointCloud::pointSize = size;
+	PointCloud::pointSize = size; // refresh point size
 }
 
 void PointCloud::spin(float deg)
@@ -206,14 +219,21 @@ void PointCloud::readObjFile(std::string fileName, std::vector<glm::vec3> *readP
 	return;
 }
 
-void PointCloud::objScacle(float winLength)
+/*
+void PointCloud::objScacle(std::vector<glm::vec3>* points)
 {
+	float winLength = 480;
 	if (radius <= 0) return;
 	float factor = 48;
 	float scalePara = 0;
+	glm::vec3 tempPoint;
 	//std::cout << "radius = " << radius;
 	scalePara = winLength / (radius*factor);
-	radius = winLength / factor;
+	//radius = winLength / factor;
 	//std::cout << ", scalePara = " << scalePara << std::endl;
-	model = glm::scale(model, glm::vec3(scalePara, scalePara, scalePara));
-}
+	//model = glm::scale(model, glm::vec3(scalePara, scalePara, scalePara));
+	for (int i = 0; i < points->size(); i++)
+	{
+		
+	}
+}*/

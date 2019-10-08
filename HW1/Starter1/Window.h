@@ -40,7 +40,8 @@ public:
 	static PointCloud* Window::dragonPoints;
 	static PointCloud* Window::bearPoints;
 	static GLfloat pointsSize;
-	static float winLength;
+	//static float winLength;
+	static int shiftFlag;
 
 	static bool initializeProgram();
 	static bool initializeObjects();
@@ -50,6 +51,7 @@ public:
 	static void idleCallback();
 	static void displayCallback(GLFWwindow*);
 	static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 };
 
 #endif

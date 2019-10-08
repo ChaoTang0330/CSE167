@@ -43,7 +43,7 @@ public:
 	glm::vec3 maxCoordinate;// Modify 9/30
 	glm::vec3 minCoordinate;// Modify 9/30
 	
-	void objScacle(float winLength);
+	//void objScacle(std::vector<glm::vec3>* readPoints);//float winLength
 };
 
 #endif

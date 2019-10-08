@@ -13,7 +13,8 @@ PointCloud* Window::bunnyPoints;
 PointCloud* Window::dragonPoints;
 PointCloud* Window::bearPoints;
 GLfloat Window::pointsSize(5);//control point size
-float Window::winLength(0);
+//float Window::winLength(0);
+int Window::shiftFlag(0);
 
 
 // The object currently displaying.
@@ -168,7 +169,7 @@ void Window::resizeCallback(GLFWwindow* window, int width, int height)
 
 	//Add scale, 9/30
 	
-	Window::winLength = (float) (width < height) ? width : height;
+	//Window::winLength = (float) (width < height) ? width : height;
 	/*
 	if (currentObj != NULL)
 	{
@@ -245,47 +246,53 @@ void Window::keyCallback(GLFWwindow* window, int key, int scancode, int action, 
 			break;
 
 		/* *** Update 9/29 *** */
+		case GLFW_KEY_LEFT_SHIFT://when shift is pressed, set flag
+		case GLFW_KEY_RIGHT_SHIFT:
+			shiftFlag = 1;
+			break;
 		case GLFW_KEY_F1:
-			// Set currentObj to cube
+			// Set currentObj to bunny
 			currentObj = bunnyPoints;
 			pointsSize = 5;
-			bunnyPoints->objScacle(Window::winLength);
+			//bunnyPoints->objScacle(Window::winLength);
 			break;
 		case GLFW_KEY_F2:
 			// Set currentObj to dragonPoints
 			currentObj = dragonPoints;
 			pointsSize = 5;
-			dragonPoints->objScacle(Window::winLength);
+			//dragonPoints->objScacle(Window::winLength);
 			break;
 		case GLFW_KEY_F3:
 			// Set currentObj to bearPoints
 			currentObj = bearPoints;
 			pointsSize = 5;
-			bearPoints->objScacle(Window::winLength);
-			std::cout << "winLength =" << Window::winLength << std::endl;
+			//bearPoints->objScacle(Window::winLength);
 			break;
 		case GLFW_KEY_P:
-			// Larger point
-			
-			if (currentObj == bunnyPoints)
+			// Larger point with shift
+			if (shiftFlag == 1) // P is pressed
 			{
-				bunnyPoints->updatePointSize(++pointsSize);
-				currentObj = bunnyPoints;
+				if (currentObj == bunnyPoints)//find what currentObj is
+				{
+					bunnyPoints->updatePointSize(++pointsSize);//refresh point size
+					currentObj = bunnyPoints;
+				}
+				else if (currentObj == dragonPoints)
+				{
+					dragonPoints->updatePointSize(++pointsSize);
+					currentObj = dragonPoints;
+				}
+				else if (currentObj == bearPoints)
+				{
+					bearPoints->updatePointSize(++pointsSize);
+					currentObj = bearPoints;
+				}
+				shiftFlag = 0;
 			}
-			else if (currentObj == dragonPoints)
-			{
-				dragonPoints->updatePointSize(++pointsSize);
-				currentObj = dragonPoints;
-			}
-			else if (currentObj == bearPoints)
-			{
-				bearPoints->updatePointSize(++pointsSize);
-				currentObj = bearPoints;
-			}
-			break;
-		case GLFW_KEY_O:
+			//break;
+		//case GLFW_KEY_O:
 			// Smaller point
-			if (pointsSize > 1)
+			else if (pointsSize > 1) //p is pressed and pointsSize is larger than 1
 			{
 				if (currentObj == bunnyPoints)
 				{
